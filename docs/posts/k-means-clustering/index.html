@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en-us">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		
+		<meta name="author" content="Brandon Manke">
+		<meta name="description" content="Personal Blog about Software, Photography, Travel, and More.">
+		<meta name="generator" content="Hugo 0.53" />
+		<title>K-Means Clustering Algorithm &middot; Brandon&#39;s Blog</title>
+		<link rel="shortcut icon" href="https://blog.brandonmanke.com/images/favicon.ico">
+		<link rel="stylesheet" href="https://blog.brandonmanke.com/css/style.css">
+		<link rel="stylesheet" href="https://blog.brandonmanke.com/css/highlight.css">
+
+		
+		<link rel="stylesheet" href="https://blog.brandonmanke.com/css/font-awesome.min.css">
+		
+
+		
+
+		
+	</head>
+
+    <body>
+       <nav class="main-nav">
+	
+	
+		<a href='https://blog.brandonmanke.com/'> <span class="arrow">←</span>Home</a>
+	
+	<a href='https://blog.brandonmanke.com/posts'>Archive</a>
+	<a href='https://blog.brandonmanke.com/tags'>Tags</a>
+	<a href='https://blog.brandonmanke.com/about'>About</a>
+
+	
+
+	
+</nav>
+
+
+        <section id="wrapper" class="post">
+            <article>
+                <header>
+                    <h1>
+                        K-Means Clustering Algorithm
+                    </h1>
+                    <h2 class="headline">
+                    Jul 28, 2018 13:33
+                    · 788 words
+                    · 4 minute read
+                      <span class="tags">
+                      
+                      
+                          
+                              <a href="https://blog.brandonmanke.com/tags/machine-learning">machine learning</a>
+                          
+                              <a href="https://blog.brandonmanke.com/tags/algorithms">algorithms</a>
+                          
+                      
+                      
+                      </span>
+                    </h2>
+                </header>
+                
+                  
+                    <div id="toc">
+                      <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#k-means-what">K-Means What?</a></li>
+<li><a href="#how-it-works">How it works?</a></li>
+<li><a href="#psuedocode">Psuedocode</a></li>
+<li><a href="#example-output">Example Output</a></li>
+<li><a href="#building">Building</a></li>
+<li><a href="#resources">Resources</a></li>
+</ul></li>
+</ul>
+</nav>
+                    </div>
+                  
+                
+                <section id="post-body">
+                    
+
+<p>I was inspired to implement this algorithm due to a couple of reasons. The main one being <a href="https://www.youtube.com/watch?v=9991JlKnFmk">this</a> video by <a href="https://twitter.com/sirajraval">Siraj Raval</a>. The second reason being that I am interested in learning about the fundamentals of machine learning.</p>
+
+<p>Here is a <a href="https://github.com/brandonmanke/k-means-clustering">link</a> to the source code if you are interested.</p>
+
+<h2 id="k-means-what">K-Means What?</h2>
+
+<p>K-Means Clustering is considered an <a href="https://en.wikipedia.org/wiki/Unsupervised_learning">Unsupervised learning algorithm</a>. More specifically it is a clustering algorithm that is able to classify n-dimensional vectors into k distinct groups. This algorithm in particular is considered an <a href="https://en.wikipedia.org/wiki/NP-hardness">NP-hard</a> problem. This essentially means that it cannot be computed in polynomial time without the use of a theoretical non-deterministic computer. To prevent this, most algorithms end up using a heuristic approach which prioritize runtime over complete accuracy (e.g. limit iterations). Unsupervised learning, while ideal, is not nearly as accurate as <a href="https://en.wikipedia.org/wiki/Supervised_learning">Supervised learning</a> (in some cases). However, since unsupervised algorithms don&rsquo;t need to rely on labeled data, this makes them <em>generally</em> easier to implement.</p>
+
+<h2 id="how-it-works">How it works?</h2>
+
+<p>Place k random centroid points on the graph.</p>
+
+<p>Repeat the following until specified limit or convergence:</p>
+
+<p>For all points/vectors v in the Matrix:
+Calculate the distance between each centroid c and v.
+Take the minimum distance to find the closest centroid.
+Assign that data point/vector to that cluster that the centroid c represents.</p>
+
+<p>For all clusters:
+Calculate the average/mean of all the points.
+Assign those averages as the new centroids for each cluster.</p>
+
+<p>(You can also stop when the clusters stop changing)</p>
+
+<h2 id="psuedocode">Psuedocode</h2>
+
+<p>Here is some &ldquo;Psuedocode&rdquo;/JavaScript I wrote that describes (roughly) how I implemented this algorithm:</p>
+
+<pre><code class="language-JS">function kMeansClustering(k, limit) {
+    let centroids = randomCentroids(k)
+    let clusters = [] // groups of length k
+
+    let iteration = 0
+    while (iteration &lt; limit) {
+        clusters = clusterPoints(centroids)
+        centroids = averageClusters(clusters, centroids)
+        iteration++
+    }
+    return clusters
+}
+
+function clusterPoints(centroids) {
+    for (Point p in Matrix) {
+        let min = Number.MAX_VALUE
+        let index = -1
+        for (Centroid c in centroids) {
+            let distance = EuclideanDist(p, c)
+            if (distance &lt; min) {
+                min = distance
+                index = indexOf(c)
+            }
+        }
+        clusters[index].add(p)
+    }
+}
+
+function averageClusters(clusters, centroids) {
+    for (Cluster c in clusters) {
+        let sum = zero_vector
+        for (Point p in c) {
+            sum += p
+        }
+        let average = sum / c.length
+        centroids[indexOf(c)] = average
+    }
+}
+
+</code></pre>
+
+<h2 id="example-output">Example Output</h2>
+
+<p>This is an example output after 8 iterations of training. We then classify a random point with the clustered data.</p>
+
+<pre><code>Iteration 8: 
+Cluster 0: (Centroid = [ 439, 476, 685 ])
+Point: 0 - [ 506, 620, 838 ]
+Point: 1 - [ 415, 344, 542 ]
+Point: 2 - [ 527, 308, 966 ]
+Point: 3 - [ 493, 201, 883 ]
+Point: 4 - [ 544, 945, 826 ]
+Point: 5 - [ 925, 323, 577 ]
+Point: 6 - [ 373, 457, 876 ]
+Point: 7 - [ 303, 527, 500 ]
+Point: 8 - [ 361, 773, 527 ]
+Point: 9 - [ 328, 267, 729 ]
+Point: 10 - [ 502, 953, 956 ]
+Point: 11 - [ 466, 971, 670 ]
+
+Cluster 1: (Centroid = [ 40, 71, 222 ])
+Point: 0 - [ 21, 137, 284 ]
+Point: 1 - [ 101, 77, 382 ]
+Point: 2 - [ 140, 274, 7 ]
+
+Cluster 2: (Centroid = [ 449, 56, 189 ])
+Point: 0 - [ 674, 122, 436 ]
+Point: 1 - [ 674, 46, 133 ]
+Point: 2 - [ 551, 69, 379 ]
+
+Cluster 3: (Centroid = [ 631, 538, 153 ])
+Point: 0 - [ 935, 985, 211 ]
+Point: 1 - [ 641, 816, 238 ]
+Point: 2 - [ 483, 386, 108 ]
+Point: 3 - [ 830, 520, 172 ]
+Point: 4 - [ 757, 632, 190 ]
+Point: 5 - [ 771, 430, 153 ]
+Point: 6 - [ 860, 449, 303 ]
+
+Cluster 4: (Centroid = [ 88, 520, 225 ])
+Point: 0 - [ 63, 530, 347 ]
+Point: 1 - [ 70, 623, 339 ]
+Point: 2 - [ 212, 530, 394 ]
+Point: 3 - [ 97, 919, 49 ]
+Point: 4 - [ 18, 759, 140 ]
+
+Classify p: [ 791, 248, 128 ]
+Is closest to cluster: 3
+</code></pre>
+
+<h2 id="building">Building</h2>
+
+<p>If you are interested in building the source code yourself.</p>
+
+<p>Via Docker:</p>
+
+<pre><code class="language-bash"># To build the image
+make docker-build # OR docker build -t k-means-clustering .
+
+# To build and run the program
+make docker-run # OR docker run -it --rm k-means-clustering
+</code></pre>
+
+<p>Via your own compiler:</p>
+
+<p>(This may or may not work depending on your compiler compatibility)</p>
+
+<p>(<a href="https://travis-ci.org/brandonmanke/k-means-clustering">Travis CI</a> is set up to build for both Clang &amp; GCC)</p>
+
+<pre><code class="language-bash">make test &amp;&amp; ./bin/all_tests # To run all unit tests
+
+make &amp;&amp; ./bin/out # For example output
+</code></pre>
+
+<h2 id="resources">Resources</h2>
+
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/K-means_clustering">https://en.wikipedia.org/wiki/K-means_clustering</a></li>
+<li><a href="https://github.com/llSourcell/k_means_clustering">https://github.com/llSourcell/k_means_clustering</a></li>
+<li><a href="https://www.datascience.com/blog/k-means-clustering">https://www.datascience.com/blog/k-means-clustering</a></li>
+</ul>
+
+                </section>
+            </article>
+
+            
+                <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fblog.brandonmanke.com%2fposts%2fk-means-clustering%2f - K-Means%20Clustering%20Algorithm "><span class="icon-twitter"> tweet</span></a>
+
+<a class="facebook" href="#" onclick="
+    window.open(
+      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+      'facebook-share-dialog',
+      'width=626,height=436');
+    return false;"><span class="icon-facebook-rect"> Share</span>
+</a>
+
+            
+
+            
+
+            
+
+            <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    <a class="symbol" href="https://flickr.com/bnm_/">
+        <i class="fa fa-flickr"></i>
+    </a>
+    
+    <a class="symbol" href="https://www.github.com/brandonmanke">
+        <i class="fa fa-github-square"></i>
+    </a>
+    
+    <a class="symbol" href="https://www.linkedin.com/in/brandonmanke/">
+        <i class="fa fa-linkedin-square"></i>
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+       © Copyright 2019 <i class="fa fa-heart" aria-hidden="true"></i> Brandon Manke
+    
+    </p>
+    <p class="small">
+        Powered by <a href="http://www.gohugo.io/">Hugo</a> Theme By <a href="https://github.com/nodejh/hugo-theme-cactus-plus">nodejh</a>
+    </p>
+</footer>
+
+        </section>
+
+        <script src="https://blog.brandonmanke.com/js/jquery-3.3.1.min.js"></script>
+<script src="https://blog.brandonmanke.com/js/main.js"></script>
+<script src="https://blog.brandonmanke.com/js/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+
+    </body>
+</html>

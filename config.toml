@@ -2,6 +2,7 @@ baseURL = "https://blog.brandonmanke.com/"
 languageCode = "en-us"
 title = "Brandon's Blog"
 theme = "hugo-theme-cactus-plus"
+publishDir = "docs"
 
 # Set the value to true if your site include CJK (Chinese, Japanese, and Korean languages) characters
 hasCJKLanguage = false
