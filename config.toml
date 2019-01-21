@@ -1,6 +1,6 @@
 baseURL = "https://blog.brandonmanke.com/"
 languageCode = "en-us"
-title = "Brandon's Blog"
+title = "Brandon Manke"
 theme = "hugo-theme-cactus-plus"
 publishDir = "docs"
 
