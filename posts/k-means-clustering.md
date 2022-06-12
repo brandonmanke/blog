@@ -4,8 +4,6 @@ publish_date: 2018-07-28
 background: white
 ---
 
-# K-Means Clustering
-
 I was inspired to implement this algorithm due to a couple of reasons. The main reason being that I am interested in learning about the fundamentals of machine learning.
 
 Here is a [link](https://github.com/brandonmanke/k-means-clustering) to the source code if you are interested.
