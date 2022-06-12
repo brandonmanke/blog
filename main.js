@@ -9,5 +9,7 @@ blog({
   links: [
     { title: "Email", url: "mailto:me@brandonmanke.com" },
     { title: "GitHub", url: "https://github.com/brandonmanke" },
+    { title: "LinkedIn", url: "https://www.linkedin.com/in/brandonmanke" },
+    { title: "Flickr", url: "https://www.flickr.com/photos/bnm_/" },
   ],
 });
